@@ -1,16 +1,27 @@
-# This is a sample Python script.
+import requests_html as rh
+from pprint import pprint
+from crypto.config import COINMARKETCAP_PRIVATE_KEY, CRYPTO_SYMBOLS
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest'
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+# %%
+def extract_crypto_data(private_key: str):
+    session = rh.HTMLSession()
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    headers = {
+        'Accepts': 'application/json',
+        'X-CMC_PRO_API_KEY': private_key,
+    }
+    parameters = {
+        'symbol': CRYPTO_SYMBOLS,
+    }
+    session.headers.update(headers)
+
+    response = session.get(url, params=parameters)
+    return response.json()
+
+
+# %%
+
+data = extract_crypto_data(COINMARKETCAP_PRIVATE_KEY)
