@@ -7,10 +7,11 @@ Base = declarative_base()
 
 
 class CryptoCurrencies(Base):
-    __tablename__ = 'currencies'
+    __tablename__ = 'currency_information'
 
     id = db.Column(db.Integer, primary_key=True)
     symbol = db.Column(db.String)
+    name = db.Column(db.String)
 
 
 class MarketData(Base):
@@ -18,10 +19,10 @@ class MarketData(Base):
     The class houses the market data extracted from CoinMarketCap
     """
 
-    __tablename__ = 'marketdata'
+    __tablename__ = 'market_data'
 
     id = db.Column(db.Integer, primary_key=True)
-    crypto_id = db.Column('crypto', db.Integer, db.ForeignKey('currencies.id'))
+    crypto_id = db.Column('crypto_id', db.Integer, db.ForeignKey('currency_information.id'))
     load_date = db.Column(db.DateTime)
     market_cap = db.Column(db.Integer)
     market_cap_percentage = db.Column(db.Float)
@@ -33,10 +34,10 @@ class CryptoRunningAverages(Base):
     """
     Quantifying the running averages for all the cryptocurrency indices that are being mapped into the ranking
     """
-    __tablename__ = 'averages'
+    __tablename__ = 'running_averages'
 
     id = db.Column(db.Integer, primary_key=True)
-    crypto_id = db.Column('crypto', db.Integer, db.ForeignKey('currencies.id'))
+    crypto_id = db.Column('crypto_id', db.Integer, db.ForeignKey('currency_information.id'))
     load_date = db.Column(db.DateTime)
 
     ewma_market_cap = db.Column(db.Float)
@@ -53,11 +54,13 @@ class IndexRanking(Base):
     each currency
     """
 
+    __tablename__ = 'index_ranking'
+
     id = db.Column(db.Integer, primary_key=True)
-    crypto_id = db.Column('crypto', db.Integer, db.ForeignKey('currencies.id'))
+    crypto_id = db.Column('crypto_id', db.Integer, db.ForeignKey('currency_information.id'))
     load_date = db.Column(db.DateTime)
-    index_ranking = db.column(db.Integer)
-    index_percentage = db.column(db.Float)
+    index_ranking = db.Column(db.Integer)
+    index_percentage = db.Column(db.Float)
 
 
 class PurchaseHistory(Base):
@@ -65,8 +68,10 @@ class PurchaseHistory(Base):
     Logs the purchase history of the cryptocurrencies to map them over time
     """
 
+    __tablename__ = 'purchase_history'
+
     id = db.Column(db.Integer, primary_key=True)
-    crypto_id = db.Column('crypto', db.Integer, db.ForeignKey('currencies.id'))
+    crypto_id = db.Column('crypto_id', db.Integer, db.ForeignKey('currency_information.id'))
     load_date = db.Column(db.DateTime)
     purchase_amt_usd = db.Column(db.Float)
     purchase_amt_crypto = db.Column(db.Float)

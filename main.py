@@ -1,6 +1,7 @@
 import requests_html as rh
 from pprint import pprint
 from crypto.config import COINMARKETCAP_PRIVATE_KEY, CRYPTO_SYMBOLS
+import os
 
 url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest'
 
@@ -23,5 +24,8 @@ def extract_crypto_data(private_key: str):
 
 
 # %%
+if '__main__':
+    if not os.path.exists('crypto_index.db'):
+        os.system('python crypto/db/models.py')
 
-data = extract_crypto_data(COINMARKETCAP_PRIVATE_KEY)
+# data = extract_crypto_data(COINMARKETCAP_PRIVATE_KEY)
