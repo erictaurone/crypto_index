@@ -12,6 +12,7 @@ class CryptoCurrencies(Base):
     id = db.Column(db.Integer, primary_key=True)
     symbol = db.Column(db.String)
     name = db.Column(db.String)
+    category = db.Column(db.String)
 
 
 class MarketData(Base):

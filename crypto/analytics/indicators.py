@@ -3,10 +3,11 @@ from numba import jit
 from numba import float64
 
 
-def _diff(data, derivative_type='1st'):
+def time_series_diff(data, derivative_type='1st'):
     """
         :param data: This is the dataset the user wants to determine the acceleration of.
             May be either a pandas series or a numpy.ndarray
+        :param derivative_type: specifies the level of the derivative to be taken, either 1st or 2nd
         :return: The 1st or 2nd derivative of the time-series data
         """
     if derivative_type == '1st':
@@ -20,13 +21,14 @@ def _diff(data, derivative_type='1st'):
 
 
 @jit(nopython=True, nogil=True)
-def _ewma(arr_in, window, min_n=0, span=False, com=False, alph=False, infinite=False):
+def _ewma(arr_in, window: tuple, min_n=0,  infinite=False):
     """
 
     :param arr_in: the input array -- must be a numpy array
-    :param span: Specify decay in terms of span, α=2/(span+1), for span≥1.
-    :param com: Specify decay in terms of center of mass, α=1/(1+com), for  com≥0
-    :param alph: Specify smoothing factor α directly,  0<α≤1
+    :param window: Specify decay in terms of span, α=2/(span+1), for span≥1,
+        com (center of mass) α=1/(1+com), for  com≥0
+        or alpha (Specify smoothing factor α directly,  0<α≤1).
+        valid entries are ('span', value), ('com', value), or ('alpha', value)
     :param infinite:
             if False:
                 (i)  y[0] = x[0]; and
@@ -41,12 +43,14 @@ def _ewma(arr_in, window, min_n=0, span=False, com=False, alph=False, infinite=F
     ewma = np.empty(n, dtype=float64)
 
     # Accounting for a center-of-mass adjustment so this can calculate RSI as well
-    if span:
-        alpha = 2 / float(window + 1)
-    elif com:
-        alpha = 1 / float(window + 1)
+    if window[0] == 'span':
+        alpha = 2 / float(window[1] + 1)
+    elif window[0] == 'com':
+        alpha = 1 / float(window[1] + 1)
+    elif window[0] == 'alpha':
+        alpha = window[1]
     else:
-        alpha = window
+        raise ValueError('Window not properly specified. It was set as {}.'.format(window))
 
     ewma_old = arr_in[0]
     ewma[0] = ewma_old
