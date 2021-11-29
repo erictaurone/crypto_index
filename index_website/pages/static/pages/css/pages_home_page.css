@@ -1,0 +1,10 @@
+.footer-dark {
+    padding:50px 0;
+    color:#f0f9ff;
+    background-color:#343a40!important;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin-bottom: 0;
+}

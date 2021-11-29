@@ -1,0 +1,232 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %}Profile{% endblock %}
+{% block style %}
+    {{ block.super }}
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
+    <link rel="stylesheet" href="{% static 'accounts/css/accounts_sidebar_base.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div id="wrapper">
+        {% include 'accounts/accounts_side_navbar_base.html' %}
+        <div class="d-flex flex-column" id="content-wrapper">
+            <div id="content">
+
+                <div class="container-fluid">
+                    <h3 class="text-dark mb-4">Profile</h3>
+                    <div class="row mb-3">
+                        <div class="col-lg-4">
+                            <div class="card mb-3">
+                                <form method="POST" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                <input type="hidden" name="action" value="user_image"/>
+                                    {{ user_image_form.media }}
+                                    <div class="card-body text-center shadow">
+                                        <img class="rounded-circle mb-3 mt-4"
+                                             src="
+                                                     {% if user.user_image %}{{ user.user_image.url }}{% else %}{% static 'accounts/images/default_avatar.jpeg' %}{% endif %}"
+                                             width="100" height="auto"
+                                             alt="My Avatar">{{ forms.user_image.user_image }}
+                                        <div class="mb-3">
+                                            <input type="submit" class="btn btn-primary btn-sm"
+                                                   style="background-color: #343a40;" value="Change Photo">
+
+                                        </div>
+                                    </div>
+
+                                </form>
+
+                            </div>
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="text-primary font-weight-bold m-0">Bank Account Information</h6>
+                                </div>
+                                <div class="card-body">
+                                    <form method="POST">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="action" value="bank_account"/>
+                                        <div class="form-row">
+                                            <div class="col">
+                                                <div class="form-group"><label
+                                                        for="First Name"><strong>{{ forms.bank_account.account_first_name.label }}</strong></label><br>{{ forms.bank_account.account_first_name }}
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="form-group"><label
+                                                        for="email"><strong>{{ forms.bank_account.account_last_name.label }}</strong></label><br>{{ forms.bank_account.account_last_name }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="col">
+                                                <div class="form-group"><label
+                                                        for="first_name"><strong>{{ forms.bank_account.account_number.label }}</strong></label><br>{{ forms.bank_account.account_number }}
+                                                </div>
+                                                <div class="form-group"><label
+                                                        for="last_name"><strong>{{ forms.bank_account.account_nickname.label }}</strong></label>{{ forms.bank_account.account_nickname }}
+                                                </div>
+                                            </div>
+                                            <div class="col">
+
+                                                <div class="form-group"><label
+                                                        for="username"><strong>{{ forms.bank_account.routing_number.label }}</strong></label><br>{{ forms.bank_account.routing_number }}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <input type="submit" class="btn btn-primary btn-sm"
+                                                   style="background-color: #343a40;" value="Update Information" action="bank_account">
+                                        </div>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-8">
+                            <div class="row mb-3 d-none">
+                                <div class="col">
+                                    <div class="card text-white bg-primary shadow">
+                                        <div class="card-body">
+                                            <div class="row mb-2">
+                                                <div class="col">
+                                                    <p class="m-0">Performance</p>
+                                                    <p class="m-0"><strong>65.2%</strong></p>
+                                                </div>
+                                                <div class="col-auto"><i class="fas fa-rocket fa-2x"></i></div>
+                                            </div>
+                                            <p class="text-white-50 small m-0"><i class="fas fa-arrow-up"></i>&nbsp;5%
+                                                since last month</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="card text-white bg-success shadow">
+                                        <div class="card-body">
+                                            <div class="row mb-2">
+                                                <div class="col">
+                                                    <p class="m-0">Performance</p>
+                                                    <p class="m-0"><strong>65.2%</strong></p>
+                                                </div>
+                                                <div class="col-auto"><i class="fas fa-rocket fa-2x"></i></div>
+                                            </div>
+                                            <p class="text-white-50 small m-0"><i class="fas fa-arrow-up"></i>&nbsp;5%
+                                                since last month</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="card shadow mb-3">
+                                        <div class="card-header py-3">
+                                            <p class="text-primary m-0 font-weight-bold">User Settings</p>
+                                        </div>
+                                        <div class="card-body">
+                                            <form>
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <div class="form-group"><label
+                                                                for="username"><strong>Username</strong></label><input
+                                                                class="form-control" type="text" placeholder="user.name"
+                                                                name="username"></div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="form-group"><label for="email"><strong>Email
+                                                            Address</strong></label><input class="form-control"
+                                                                                           type="email"
+                                                                                           placeholder="user@example.com"
+                                                                                           name="email"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <div class="form-group"><label for="first_name"><strong>First
+                                                            Name</strong></label><input class="form-control" type="text"
+                                                                                        placeholder="John"
+                                                                                        name="first_name"></div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="form-group"><label for="last_name"><strong>Last
+                                                            Name</strong></label><input class="form-control" type="text"
+                                                                                        placeholder="Doe"
+                                                                                        name="last_name"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <button class="btn btn-primary btn-sm" type="submit">Save Settings
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="card shadow">
+                                        <div class="card-header py-3">
+                                            <p class="text-primary m-0 font-weight-bold">Contact Settings</p>
+                                        </div>
+                                        <div class="card-body">
+                                            <form method="POST">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="action" value="contact"/>
+                                                <div class="form-group"><label
+                                                        for="address"><strong>{{ forms.contact.address.label }}</strong></label>{{ forms.contact.address }}
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <div class="form-group"><label
+                                                                for="city"><strong>{{ forms.contact.city.label }}</strong></label>{{ forms.contact.city }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="form-group"><label
+                                                                for="zip_code"><strong>{{ forms.contact.zip_code.label }}</strong></label>{{ forms.contact.zip_code }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="form-group"><label
+                                                                for="country"><strong>{{ forms.contact.country.label }}</strong></label>{{ forms.contact.country }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="phone_number">
+                                                        <strong>{{ forms.contact.phone_number.label }}</strong>
+                                                    </label>{{ forms.contact.phone_number }}
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="submit" class="btn btn-primary btn-sm"
+                                                           style="background-color: #343a40;"
+                                                           value="Update Information">
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card shadow mb-5">
+                        <div class="card-header py-3">
+                            <p class="text-primary m-0 font-weight-bold">BTC Address Information</p>
+                            <div class="form-group">
+                                <form></form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a></div>
+
+{% endblock %}
+{% block scripts %}
+    {{ block.super }}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
+    <script src="{% static 'accounts/js/bs-init.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
+    <script src="{% static 'accounts/js/theme.js' %}"></script>
+{% endblock %}
